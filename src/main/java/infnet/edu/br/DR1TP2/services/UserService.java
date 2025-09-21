@@ -42,7 +42,7 @@ public class UserService {
     }
 
     public Optional<User> updateUser(UpdateUserDTO updateUserDTO) {
-        User user = userRepository.findById(updateUserDTO.userId()).orElse(null);
+        User user = userRepository.findById(updateUserDTO.id()).orElse(null);
         if (user == null) {
             return Optional.empty();
         }
@@ -50,7 +50,7 @@ public class UserService {
             String newEmail = updateUserDTO.email().get();
             validateEmail(newEmail);
             boolean emailAlreadyInUse = userRepository.findByEmail(newEmail)
-                    .filter(u -> !u.getId().equals(updateUserDTO.userId()))
+                    .filter(u -> !u.getId().equals(updateUserDTO.id()))
                     .isPresent();
             if (emailAlreadyInUse) {
                 throw new EmailAlreadyInUseException("Email already in use");
